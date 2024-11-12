@@ -1,83 +1,94 @@
-## Cryptography---19CS412-classical-techqniques
-### Vigenere Cipher
-Vigenere Cipher using with different key values
-### AIM:
-To develop a simple C program to implement Vigenere Cipher.
-### DESIGN STEPS:
+Cryptography---19CS412-classical-techqniques
+EX.NO:1 Caeser Cipher
+Caeser Cipher using with different key values
+
+AIM:
+To encrypt and decrypt the given message by using Ceaser Cipher encryption algorithm.
+
+DESIGN STEPS:
 Step 1:
-Design of Vigenere Cipher algorithnm
+Design of Caeser Cipher algorithnm
+
 Step 2:
 Implementation using C or pyhton code
+
 Step 3:
-Testing algorithm with different key values.
-### PROGRAM:
-```
+In Ceaser Cipher each letter in the plaintext is replaced by a letter some fixed number of positions down the alphabet.
+For example, with a left shift of 3, D would be replaced by A, E would become B, and so on.
+The encryption can also be represented using modular arithmetic by first transforming the letters into numbers, according to the
+scheme, A = 0, B = 1, Z = 25.
+Encryption of a letter x by a shift n can be described mathematically as, En(x) = (x + n) mod26
+Decryption is performed similarly, Dn (x)=(x - n) mod26
+PROGRAM:
+CaearCipher.
+
 #include <stdio.h>
-#include<conio.h>
-#include <ctype.h>
 #include <string.h>
-void encipher();
-void decipher();
-int main()
-{
-int choice;
-while(1)
-{
-printf("\n1. Encrypt Text");
-printf("\n2. Decrypt Text");
-printf("\n3. Exit");
-printf("\n\nEnter Your Choice : ");
-scanf("%d",&choice);
-if(choice == 3)
-exit(0);
-else if(choice == 1)
-encipher();
-else if(choice == 2)
-decipher();
-else
-printf("Please Enter Valid Option.");
+
+void encrypt(char message[], int shift) {
+    char ch;
+    for (int i = 0; message[i] != '\0'; ++i) {
+        ch = message[i];
+        if (ch >= 'a' && ch <= 'z') {
+            ch = ch + shift;
+            if (ch > 'z') {
+                ch = ch - 'z' + 'a' - 1;
+            }
+            message[i] = ch;
+        } else if (ch >= 'A' && ch <= 'Z') {
+            ch = ch + shift;
+            if (ch > 'Z') {
+                ch = ch - 'Z' + 'A' - 1;
+            }
+            message[i] = ch;
+        }
+    }
+    printf("Encrypted message: %s\n", message);
 }
+
+void decrypt(char message[], int shift) {
+    char ch;
+    for (int i = 0; message[i] != '\0'; ++i) {
+        ch = message[i];
+        if (ch >= 'a' && ch <= 'z') {
+            ch = ch - shift;
+            if (ch < 'a') {
+                ch = ch + 'z' - 'a' + 1;
+            }
+            message[i] = ch;
+        } else if (ch >= 'A' && ch <= 'Z') {
+            ch = ch - shift;
+            if (ch < 'A') {
+                ch = ch + 'Z' - 'A' + 1;
+            }
+            message[i] = ch;
+        }
+    }
+    printf("Decrypted message: %s\n", message);
 }
-void encipher()
-{
-unsigned int i,j;
-char input[50],key[10];
-printf("\n\nEnter Plain Text: ");
-scanf("%s",input);
-printf("\nEnter Key Value: ");
-scanf("%s",key);
-printf("\nResultant Cipher Text: ");
-for(i=0,j=0;i<strlen(input);i++,j++)
-{
-if(j>=strlen(key))
-{ j=0;
+
+int main() {
+    printf("  ***Caeser Cipher***\n");
+    char message[100];
+    int shift;
+
+    printf("Enter a message: ");
+    fgets(message, sizeof(message), stdin);  // Correct use of fgets
+
+    printf("Enter shift amount: ");
+    scanf("%d", &shift);
+
+    // Make a copy of the message to decrypt later
+    char encrypted_message[100];
+    strcpy(encrypted_message, message);
+
+    encrypt(encrypted_message, shift);
+    decrypt(encrypted_message, shift);
+
+    return 0;
 }
-printf("%c",65+(((toupper(input[i])-65)+(toupper(key[j])-
-65))%26));
-}}
-void decipher()
-{
-unsigned int i,j;
-char input[50],key[10];
-int value;
-printf("\n\nEnter Cipher Text: ");
-scanf("%s",input);
-printf("\n\nEnter the key value: ");
-scanf("%s",key);
-for(i=0,j=0;i<strlen(input);i++,j++)
-{
-if(j>=strlen(key))
-{ j=0; }
-value = (toupper(input[i])-64)-(toupper(key[j])-64);
-if( value < 0)
-{ value = value * -1;
-}
-printf("%c",65 + (value % 26));
-}
-return 0;
-}
-```
-### OUTPUT:
-![image](https://github.com/user-attachments/assets/b1d4c682-4c31-4455-a8e5-ea5ec0587069)
-### RESULT:
-The program is executed successfully
+OUTPUT:
+image
+
+RESULT:
+The program for the Caeser Cipher is executed successfully.
